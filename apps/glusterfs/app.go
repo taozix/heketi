@@ -23,7 +23,6 @@ import (
 
 	"github.com/heketi/heketi/executors"
 	"github.com/heketi/heketi/executors/injectexec"
-	"github.com/heketi/heketi/executors/kubeexec"
 	"github.com/heketi/heketi/executors/mockexec"
 	"github.com/heketi/heketi/executors/sshexec"
 	"github.com/heketi/heketi/pkg/logging"
@@ -117,7 +116,6 @@ func (app *App) setup(conf *GlusterFSConfig) error {
 	// As it is very difficult to distinguish missing parameter from
 	// set-but-false parameter in json, we are going to ignore json config
 	// We will provide a env method to set it to false again.
-	app.conf.KubeConfig.RebalanceOnExpansion = true
 	app.conf.SshConfig.RebalanceOnExpansion = true
 
 	// Set values mentioned in environmental variable
@@ -139,8 +137,6 @@ func (app *App) setup(conf *GlusterFSConfig) error {
 	case "mock":
 		app.xo, err = mockexec.NewMockExecutor()
 		app.executor = app.xo
-	case "kube", "kubernetes":
-		app.executor, err = kubeexec.NewKubeExecutor(&app.conf.KubeConfig)
 	case "ssh", "":
 		app.executor, err = sshexec.NewSshExecutor(&app.conf.SshConfig)
 	case "inject/ssh":
@@ -356,7 +352,6 @@ func (a *App) setFromEnvironmentalVariable() {
 			logger.LogError("Error: While parsing HEKETI_GLUSTERAPP_REBALANCE_ON_EXPANSION as bool: %v", err)
 		} else {
 			a.conf.SshConfig.RebalanceOnExpansion = value
-			a.conf.KubeConfig.RebalanceOnExpansion = value
 		}
 	}
 

@@ -18,11 +18,6 @@ import (
 	"github.com/urfave/negroni"
 
 	"github.com/heketi/heketi/middleware"
-	"github.com/heketi/heketi/pkg/kubernetes"
-)
-
-var (
-	kubeBackupDbToSecret = kubernetes.KubeBackupDbToSecret
 )
 
 // Authorization function
@@ -43,34 +38,6 @@ func (a *App) Auth(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 
 	// Everything is clean
 	next(w, r)
-}
-
-// Backup database to a secret
-func (a *App) BackupToKubernetesSecret(
-	w http.ResponseWriter,
-	r *http.Request,
-	next http.HandlerFunc) {
-
-	// Call the next middleware first
-	// Wrap it in a negroni ResponseWriter because for some reason
-	// the Golang http ResponseWriter does not provide access to
-	// the HttpStatus.
-	responsew := negroni.NewResponseWriter(w)
-	next(responsew, r)
-
-	// Backup for everything except GET methods which do not
-	// provide information on asynchronous completion request
-	if !a.isAsyncDone(responsew, r) && r.Method == http.MethodGet {
-		return
-	}
-
-	// Backup database
-	err := kubeBackupDbToSecret(a.db)
-	if err != nil {
-		logger.Err(err)
-	} else {
-		logger.Info("Backup successful")
-	}
 }
 
 func (a *App) isAsyncDone(

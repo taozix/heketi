@@ -12,7 +12,6 @@ package injectexec
 import (
 	"github.com/heketi/heketi/executors"
 	"github.com/heketi/heketi/executors/cmdexec"
-	"github.com/heketi/heketi/executors/kubeexec"
 	"github.com/heketi/heketi/executors/mockexec"
 	"github.com/heketi/heketi/executors/sshexec"
 	"github.com/heketi/heketi/executors/stack"
@@ -51,10 +50,6 @@ func NewInjectExecutor(
 	// to load the hooks for individual commands
 	switch x := e.(type) {
 	case *sshexec.SshExecutor:
-		logger.Info("injecting executor with transport")
-		ie.realTransport = x.RemoteExecutor
-		x.RemoteExecutor = ie.Wrap(x.RemoteExecutor)
-	case *kubeexec.KubeExecutor:
 		logger.Info("injecting executor with transport")
 		ie.realTransport = x.RemoteExecutor
 		x.RemoteExecutor = ie.Wrap(x.RemoteExecutor)

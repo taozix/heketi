@@ -13,6 +13,6 @@ var (
 	// Default limits
 	BrickMinSize         = uint64(1 * GB)
 	BrickMaxSize         = uint64(4 * TB)
-	BrickMaxNum          = 32
-	maxVolumesPerCluster = 1000
+	BrickMaxNum          = 1024
+	maxVolumesPerCluster = 10240
 )

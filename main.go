@@ -24,7 +24,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/spf13/cobra"
 	"github.com/urfave/negroni"
-	restclient "k8s.io/client-go/rest"
 
 	"github.com/heketi/heketi/apps/glusterfs"
 	"github.com/heketi/heketi/middleware"
@@ -570,14 +569,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if options.BackupDbToKubeSecret {
-		// Check if running in a Kubernetes environment
-		_, err = restclient.InClusterConfig()
-		if err == nil {
-			// Load middleware to backup database
-			n.UseFunc(app.BackupToKubernetesSecret)
-		}
-	}
 
 	// Add all endpoints after the middleware was added
 	n.UseHandler(heketiRouter)

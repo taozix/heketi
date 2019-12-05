@@ -11,7 +11,6 @@ package glusterfs
 
 import (
 	"github.com/heketi/heketi/executors/injectexec"
-	"github.com/heketi/heketi/executors/kubeexec"
 	"github.com/heketi/heketi/executors/sshexec"
 )
 
@@ -25,7 +24,6 @@ type GlusterFSConfig struct {
 	Executor     string                  `json:"executor"`
 	Allocator    string                  `json:"allocator"`
 	SshConfig    sshexec.SshConfig       `json:"sshexec"`
-	KubeConfig   kubeexec.KubeConfig     `json:"kubeexec"`
 	InjectConfig injectexec.InjectConfig `json:"injectexec"`
 	Loglevel     string                  `json:"loglevel"`
 
