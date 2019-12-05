@@ -116,7 +116,7 @@ func (app *App) setup(conf *GlusterFSConfig) error {
 	// As it is very difficult to distinguish missing parameter from
 	// set-but-false parameter in json, we are going to ignore json config
 	// We will provide a env method to set it to false again.
-	app.conf.SshConfig.RebalanceOnExpansion = true
+	app.conf.SshConfig.RebalanceOnExpansion = false 
 
 	// Set values mentioned in environmental variable
 	app.setFromEnvironmentalVariable()
