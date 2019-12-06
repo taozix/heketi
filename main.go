@@ -27,7 +27,6 @@ import (
 
 	"github.com/heketi/heketi/apps/glusterfs"
 	"github.com/heketi/heketi/middleware"
-	"github.com/heketi/heketi/pkg/metrics"
 	"github.com/heketi/heketi/server/admin"
 	"github.com/heketi/heketi/server/config"
 	"github.com/heketi/heketi/server/profiling"
@@ -528,7 +527,6 @@ func main() {
 			fmt.Fprint(w, "Hello from Heketi")
 		})
 
-	router.Methods("GET").Path("/metrics").Name("Metrics").HandlerFunc(metrics.NewMetricsHandler(app))
 
 	// Enable profiling on "/debug/pprof"
 	if options.Profiling {
