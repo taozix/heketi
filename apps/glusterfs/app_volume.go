@@ -28,6 +28,7 @@ const (
 
 func (a *App) VolumeCreate(w http.ResponseWriter, r *http.Request) {
 
+	fmt.Println("co&m volume create req:", r)
 	var msg api.VolumeCreateRequest
 	err := utils.GetJsonFromRequest(r, &msg)
 	if err != nil {
@@ -134,6 +135,7 @@ func (a *App) VolumeCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vol := NewVolumeEntryFromRequest(&msg)
+	fmt.Println("co&m New volume:", vol.Info)
 
 	if uint64(msg.Size)*GB < vol.Durability.MinVolumeSize() {
 		http.Error(w, fmt.Sprintf("Requested volume size (%v GB) is "+
@@ -230,6 +232,8 @@ func (a *App) VolumeInfo(w http.ResponseWriter, r *http.Request) {
 func (a *App) VolumeDelete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
+	fmt.Println("co&m volume delete ID:", id)
+	fmt.Println("co&m volume delete req:", r)
 
 	var volume *VolumeEntry
 	err := a.db.View(func(tx *bolt.Tx) error {
@@ -288,6 +292,8 @@ func (a *App) VolumeExpand(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 	id := vars["id"]
+	fmt.Println("co&m expand volume ID:", id)
+	fmt.Println("co&m expand volume req:", r)
 
 	var msg api.VolumeExpandRequest
 	err := utils.GetJsonFromRequest(r, &msg)
