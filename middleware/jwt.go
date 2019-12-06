@@ -58,24 +58,25 @@ type HeketiJwtClaims struct {
 func (c *HeketiJwtClaims) Valid() error {
 	vErr := new(jwt.ValidationError)
 	now := jwt.TimeFunc().Unix()
+	issuer := c.Issuer
 
 	if c.VerifyExpiresAt(now, true) == false {
 		delta := time.Unix(now, 0).Sub(time.Unix(c.ExpiresAt, 0))
-		vErr.Inner = fmt.Errorf("Token is expired by %v", delta)
+		vErr.Inner = fmt.Errorf("Token is expired by %v, co&m-Issuer %s", delta, issuer)
 		vErr.Errors |= jwt.ValidationErrorExpired
 		logger.LogError("exp validation failed: %v", vErr.Error())
 	}
 
 	// "iat" check
 	if now < c.IssuedAt-iatLeeway {
-		vErr.Inner = fmt.Errorf("Token used before issued")
+		vErr.Inner = fmt.Errorf("Token used before issued, co&m-Issuer %s", issuer)
 		vErr.Errors |= jwt.ValidationErrorIssuedAt
 		logger.LogError("iat validation failed: %v, time now: %v, time issued: %v", vErr.Error(), time.Unix(now, 0), time.Unix(c.IssuedAt, 0))
 	}
 
 	// "nbf" is not a required claim
 	if c.VerifyNotBefore(now, false) == false {
-		vErr.Inner = fmt.Errorf("token is not valid yet")
+		vErr.Inner = fmt.Errorf("token is not valid yet, co&m-Issuer %s", issuer)
 		vErr.Errors |= jwt.ValidationErrorNotValidYet
 	}
 
