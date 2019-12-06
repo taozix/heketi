@@ -18,6 +18,8 @@ import (
 	"strconv"
 	"strings"
 
+	"regexp"
+
 	"github.com/boltdb/bolt"
 	"github.com/heketi/heketi/executors"
 	wdb "github.com/heketi/heketi/pkg/db"
@@ -132,6 +134,10 @@ func NewVolumeEntryFromRequest(req *api.VolumeCreateRequest) *VolumeEntry {
 	} else {
 		vol.Info.Name = req.Name
 	}
+	//co&m
+	rep := []byte("")
+	reg := regexp.MustCompile(`(_\w{8}-\w{4}-\w{4}-\w{4}-\w{12})$`)
+	vol.Info.Name = string(reg.ReplaceAll([]byte(vol.Info.Name), rep))
 
 	// Set default thinp factor
 	if vol.Info.Snapshot.Enable && vol.Info.Snapshot.Factor == 0 {
