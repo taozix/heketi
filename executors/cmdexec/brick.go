@@ -96,7 +96,7 @@ func (s *CmdExecutor) BrickCreate(host string,
 		mkfsXfs,
 
 		// Fstab
-		fmt.Sprintf("awk \"BEGIN {print \\\"%v %v xfs rw,inode64,noatime,nouuid 1 2\\\" >> \\\"%v\\\"}\"",
+		fmt.Sprintf("awk \"BEGIN {print \\\"%v %v xfs rw,inode64,noatime,nouuid 0 0\\\" >> \\\"%v\\\"}\"",
 			devnode,
 			mountPath,
 			s.Fstab),
