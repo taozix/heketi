@@ -79,7 +79,7 @@ func (a *App) VolumeCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if msg.Durability.Type == api.DurabilityReplicate {
-		if msg.Durability.Replicate.Replica > 3 {
+		if msg.Durability.Replicate.Replica > 5 {
 			http.Error(w, "Invalid replica value", http.StatusBadRequest)
 			logger.LogError("Invalid replica value")
 			return
